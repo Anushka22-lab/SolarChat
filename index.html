@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Solar Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="header">🌞 SOLAR CHAT – Space Weather Assistant</div>
+
+  <div class="messages" id="chat">
+    <div class="bot">🤖 Hello! I am Solar Chat. Ask me about solar storms.</div>
+  </div>
+
+  <div class="input-box">
+    <input id="msg" placeholder="Ask about space weather...">
+    <button onclick="send()">Send</button>
+  </div>
+</div>
+
+<script>
+async function send() {
+  let input = document.getElementById("msg");
+  let chat = document.getElementById("chat");
+
+  let userMsg = input.value;
+  if (!userMsg) return;
+
+  chat.innerHTML += `<div class="user">You: ${userMsg}</div>`;
+  input.value = "";
+
+  let res = await fetch("http://127.0.0.1:8000/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: userMsg})
+  });
+
+  let data = await res.json();
+  chat.innerHTML += `<div class="bot">${data.reply}</div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
