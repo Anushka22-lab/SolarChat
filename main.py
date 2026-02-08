@@ -27,6 +27,14 @@ app.add_middleware(
 class Chat(BaseModel):
     message: str
 
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "SolarChat backend is running 🚀"
+    }
+
+
 # 🔹 Gemini 2.5 Flash (explicit API key pass = no crash)
 llm = ChatGoogleGenerativeAI(
     model="models/gemini-2.5-flash",
